@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
+<<<<<<< HEAD
 from .models import College, Program, Organization, Student, OrgMember
 
 admin.site.register(Program)
@@ -12,12 +13,32 @@ class CollegeAdmin(admin.ModelAdmin):
     list_display = ("college_name", "created_at", "updated_at",)
     search_fields = ("college_name",)
 
+=======
+from .models import  College, Program, Organization, Student, OrgMember
+>>>>>>> 194c3b3dfedf79baeaec30d13c3dbd068c946420
 
+@admin.register(College)
+class CollegeAdmin(admin.ModelAdmin):
+    list_display = ("college_name", "created_at", "updated_at",)
+    search_fields = ("college_name",)
+    list_filter = ("created_at",)
+
+@admin.register(Program)
+class ProgramAdmin(admin.ModelAdmin):
+    list_display = ("prog_name","college",)
+    search_fields = ("prog_name","college",)
+    list_filter = ("college",)
+    
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = ("name","college","description",)
+    search_fields = ("name","description",)
+    
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ("student_id", "lastname", "firstname", "middlename", "program")
-    search_fields = ("lastname", "firstname",)
+    list_display = ("student_id", "lastname", "program")
+    search_fields = ("lastname", "program",)
 
 
 @admin.register(OrgMember)
