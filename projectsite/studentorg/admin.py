@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-<<<<<<< HEAD
 from .models import College, Program, Organization, Student, OrgMember
 
 admin.site.register(Program)
@@ -13,9 +12,6 @@ class CollegeAdmin(admin.ModelAdmin):
     list_display = ("college_name", "created_at", "updated_at",)
     search_fields = ("college_name",)
 
-=======
-from .models import  College, Program, Organization, Student, OrgMember
->>>>>>> 194c3b3dfedf79baeaec30d13c3dbd068c946420
 
 @admin.register(College)
 class CollegeAdmin(admin.ModelAdmin):
