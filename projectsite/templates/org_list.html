@@ -50,9 +50,10 @@
                   <td>{{ organization.description }}</td>
                   <td>
                     <a href="{% url 'organization-update' organization.pk %}" class="btn btn-primary btn-sm">
-                        <i class="la la-edit"></i> 
-                        <a href="organization_list/{{ object.id }}/delete" class="text-danger">Delete
-                        </a>
+                      <i class="la la-edit"></i> Edit
+                    </a>
+                    <a href="{% url 'organization-delete' organization.pk %}" class="btn btn-danger btn-sm">
+                      <i class="la la-trash"></i> Delete
                     </a>
                   </td>
                 </tr>
