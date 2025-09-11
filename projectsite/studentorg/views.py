@@ -44,7 +44,7 @@ class StudentList(ListView):
     model = Student
     context_object_name = 'students'
     template_name = 'student/student_list.html'
-    paginate_by = 10
+    paginate_by = 5
 
 
 class StudentCreateView(CreateView):
@@ -72,7 +72,7 @@ class CollegeList(ListView):
     model = College
     context_object_name = 'colleges'
     template_name = 'college/college_list.html'
-    paginate_by = 10
+    paginate_by = 5
 
 
 class CollegeCreateView(CreateView):
@@ -100,7 +100,7 @@ class ProgramList(ListView):
     model = Program
     context_object_name = 'programs'
     template_name = 'program/program_list.html'
-    paginate_by = 10
+    paginate_by = 5
 
 
 class ProgramCreateView(CreateView):
@@ -128,7 +128,7 @@ class OrgMemberList(ListView):
     model = OrgMember
     context_object_name = 'orgmembers'
     template_name = 'orgmember/orgmember_list.html'
-    paginate_by = 10
+    paginate_by = 5
 
 
 class OrgMemberCreateView(CreateView):
