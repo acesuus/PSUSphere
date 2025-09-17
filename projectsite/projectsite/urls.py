@@ -21,4 +21,5 @@ from studentorg.views import HomePageView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('studentorg.urls')),
+    path("accounts/", include("allauth.urls")), # allauth routes
 ]
