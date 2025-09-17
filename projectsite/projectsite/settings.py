@@ -39,6 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "studentorg",
     "widget_tweaks",
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+]
+
+SITE_ID = 2
+AUTHENTICATION_BACKENDS = [
+'django.contrib.auth.backends.ModelBackend',
+'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 MIDDLEWARE = [
