@@ -1,0 +1,159 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Connect {{ provider.name }} - PSUSphere{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #f8f9fc;
+    }
+    .auth-card {
+        max-width: 500px;
+        width: 100%;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        text-align: center;
+        margin: 2rem;
+    }
+    .provider-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+    .provider-google {
+        color: #DB4437;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(219, 68, 55, 0.2);
+    }
+    .provider-github {
+        color: #333;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .provider-info {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .provider-name {
+        font-weight: 600;
+        color: #333;
+    }
+    .btn-confirm {
+        padding: 0.75rem 2rem;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+    .btn-confirm:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .btn-google {
+        background-color: #DB4437;
+        border-color: #DB4437;
+        color: white;
+    }
+    .btn-google:hover {
+        background-color: #c53929;
+        border-color: #c53929;
+        color: white;
+    }
+    .btn-github {
+        background-color: #333;
+        border-color: #333;
+        color: white;
+    }
+    .btn-github:hover {
+        background-color: #24292e;
+        border-color: #24292e;
+        color: white;
+    }
+    .cancel-link {
+        color: #6c757d;
+        text-decoration: none;
+        margin-top: 1rem;
+        display: inline-block;
+    }
+    .cancel-link:hover {
+        color: #343a40;
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    {% if provider.id == 'google' %}
+        <div class="provider-icon provider-google">
+            <i class="fab fa-google"></i>
+        </div>
+    {% elif provider.id == 'github' %}
+        <div class="provider-icon provider-github">
+            <i class="fab fa-github"></i>
+        </div>
+    {% endif %}
+
+    <h3 class="mb-4">Connect with {{ provider.name }}</h3>
+    
+    <div class="provider-info mb-4">
+        <p class="mb-0">
+            You are about to connect your PSUSphere account with 
+            <span class="provider-name">{{ provider.name }}</span>. 
+            This will allow you to sign in using {{ provider.name }} in the future.
+        </p>
+    </div>
+
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <button type="submit" class="btn btn-lg w-100 btn-confirm mb-3 
+            {% if provider.id == 'google' %}btn-google
+            {% elif provider.id == 'github' %}btn-github
+            {% else %}btn-primary{% endif %}">
+            {% if provider.id == 'google' %}
+                <i class="fab fa-google me-2"></i>
+            {% elif provider.id == 'github' %}
+                <i class="fab fa-github me-2"></i>
+            {% endif %}
+            Continue with {{ provider.name }}
+        </button>
+    </form>
+    
+    <a href="{% url 'account_login' %}" class="cancel-link">
+        <i class="fas fa-arrow-left me-1"></i> Back to login
+    </a>
+</div>
+{% endblock %}

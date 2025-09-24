@@ -1,0 +1,207 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+{% load static %}
+{% load socialaccount %}
+
+{% block title %}Complete Sign Up - PSUSphere{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #f8f9fc;
+    }
+    .auth-card {
+        max-width: 600px;
+        width: 100%;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        text-align: center;
+        margin: 2rem;
+    }
+    .provider-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+    .provider-google {
+        color: #DB4437;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(219, 68, 55, 0.2);
+    }
+    .provider-github {
+        color: #333;
+        background-color: #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .form-section {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        text-align: left;
+    }
+    .form-section h4 {
+        color: #495057;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    .form-floating {
+        margin-bottom: 1rem;
+    }
+    .form-floating > .form-control {
+        padding: 1rem 0.75rem;
+    }
+    .form-floating > label {
+        padding: 1rem 0.75rem;
+    }
+    .error-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+    .info-text {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    .btn-signup {
+        padding: 0.75rem 2rem;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+    .btn-signup:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .required-field::after {
+        content: "*";
+        color: #dc3545;
+        margin-left: 4px;
+    }
+    .social-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+    }
+    .social-info i {
+        font-size: 1.5rem;
+    }
+    .social-info .provider-details {
+        text-align: left;
+    }
+    .social-info .provider-name {
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+    .social-info .provider-email {
+        color: #6c757d;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <h3 class="mb-3">Complete Your Profile</h3>
+    
+    <div class="social-info">
+        {% if sociallogin.provider.id == 'google' %}
+            <i class="fab fa-google provider-google"></i>
+        {% elif sociallogin.provider.id == 'github' %}
+            <i class="fab fa-github provider-github"></i>
+        {% endif %}
+        <div class="provider-details">
+            <p class="provider-name">{{ sociallogin.provider.name }} Account</p>
+            <p class="provider-email">{{ sociallogin.user.email }}</p>
+        </div>
+    </div>
+
+    {% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        Please correct the errors below.
+    </div>
+    {% endif %}
+
+    <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+        {% csrf_token %}
+
+        <div class="form-section">
+            <h4>Personal Information</h4>
+            
+            <div class="form-floating mb-3">
+                <input type="text" name="username" class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                       id="id_username" placeholder="Username" value="{{ form.username.value|default:'' }}" required>
+                <label for="id_username" class="required-field">Username</label>
+                {% if form.username.errors %}
+                <div class="error-message">{{ form.username.errors.0 }}</div>
+                {% endif %}
+                <small class="info-text">Choose a unique username for your account.</small>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="email" name="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                       id="id_email" placeholder="Email" value="{{ form.email.value|default:'' }}" required>
+                <label for="id_email" class="required-field">Email address</label>
+                {% if form.email.errors %}
+                <div class="error-message">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            {% if form.password1 %}
+            <div class="form-floating mb-3">
+                <input type="password" name="password1" class="form-control {% if form.password1.errors %}is-invalid{% endif %}"
+                       id="id_password1" placeholder="Password" required>
+                <label for="id_password1" class="required-field">Password</label>
+                {% if form.password1.errors %}
+                <div class="error-message">{{ form.password1.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" name="password2" class="form-control {% if form.password2.errors %}is-invalid{% endif %}"
+                       id="id_password2" placeholder="Confirm Password" required>
+                <label for="id_password2" class="required-field">Confirm Password</label>
+                {% if form.password2.errors %}
+                <div class="error-message">{{ form.password2.errors.0 }}</div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+        <button class="btn btn-primary btn-signup w-100" type="submit">
+            <i class="fas fa-user-plus me-2"></i>Complete Sign Up
+        </button>
+    </form>
+
+    <p class="mt-3">
+        <a href="{% url 'account_login' %}" class="text-muted">
+            <i class="fas fa-arrow-left me-1"></i>Back to login
+        </a>
+    </p>
+</div>
+{% endblock %}
